@@ -28,13 +28,21 @@ function App() {
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
 
-    const grid = [];
-    for (let i = 0; i < 8; i++) {
-      const row = [];
-      for (let j = 0; j < 5; j++) {
-        row.push(labelData);
+    // Create pairs of rows
+    const rowPairs = [];
+    for (let i = 0; i < 4; i++) {
+      // 4 pairs to make 8 rows total
+      const twoRows = [];
+      for (let j = 0; j < 2; j++) {
+        // 2 rows in each pair
+        const row = [];
+        for (let k = 0; k < 5; k++) {
+          // 5 labels in each row
+          row.push(labelData);
+        }
+        twoRows.push(row);
       }
-      grid.push(row);
+      rowPairs.push(twoRows);
     }
 
     printWindow.document.write(`
@@ -42,19 +50,25 @@ function App() {
         <head>
           <title>Labels Preview</title>
           <style>
-            .grid {
-              display: grid;
-              grid-template-columns: repeat(5, 1fr);
-              gap: 10px;
+            .grid-container {
               max-width: 210mm;
               margin: 0 auto;
             }
+            .grid-section {
+              display: grid;
+              grid-template-columns: repeat(5, 1fr);
+              gap: 10px;
+              margin-bottom: 20px;
+            }
+            .grid-section-4 { margin-bottom: 40px; }
+            .grid-section-1 { margin-bottom: 40px; }
+            .grid-section-2 { margin-bottom: 40px; }
+            .grid-section-3 { margin-bottom: 40px; }
             .label {
               border: 1px solid #000;
               padding: 10px;
               text-align: center;
               border-radius: 8px;
-              margin-bottom:14px;
             }
             .label p {
               margin: 5px 0;
@@ -62,22 +76,30 @@ function App() {
             }
             @media print {
               body { margin: 0; }
-              .grid { gap: 0; }
+              .grid-section { gap: 0; }
               .label { border: none; }
             }
           </style>
         </head>
         <body>
-          <div class="grid">
-            ${grid
-              .flat()
+          <div class="grid-container">
+            ${rowPairs
               .map(
-                (label) => `
-              <div class="label">
-                <p>${label.productCode}</p>
-                <p>${label.mfgDate}</p>
-                <p>${label.expDate}</p>
-                <p>${label.price}</p>
+                (pair, index) => `
+              <div class="grid-section grid-section-${index + 1}">
+                ${pair
+                  .flat()
+                  .map(
+                    (label) => `
+                  <div class="label">
+                    <p>${label.productCode}</p>
+                    <p>${label.mfgDate}</p>
+                    <p>${label.expDate}</p>
+                    <p>${label.price}</p>
+                  </div>
+                `
+                  )
+                  .join("")}
               </div>
             `
               )
