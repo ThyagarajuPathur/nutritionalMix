@@ -58,7 +58,7 @@ function App() {
               display: grid;
               grid-template-columns: repeat(5, 1fr);
               gap: 10px;
-              margin-bottom: 20px;
+              margin-bottom: 5px;
             }
             .grid-section-4 { margin-bottom: 40px; }
             .grid-section-1 { margin-bottom: 40px; }
@@ -69,10 +69,11 @@ function App() {
               padding: 10px;
               text-align: center;
               border-radius: 8px;
+              margin-bottom:10px;
             }
             .label p {
               margin: 5px 0;
-              font-size: 14px;
+              font-size: 14px;         
             }
             @media print {
               body { margin: 0; }
