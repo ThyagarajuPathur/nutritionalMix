@@ -6,6 +6,7 @@ interface LabelData {
   mfgDate: string;
   expDate: string;
   price: string;
+  weight?: string;
 }
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     mfgDate: "20/09/25",
     expDate: "20/03/26",
     price: "399/-",
+    weight: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,26 +87,27 @@ function App() {
         <body>
           <div class="grid-container">
             ${rowPairs
-              .map(
-                (pair, index) => `
+        .map(
+          (pair, index) => `
               <div class="grid-section grid-section-${index + 1}">
                 ${pair
-                  .flat()
-                  .map(
-                    (label) => `
+              .flat()
+              .map(
+                (label) => `
                   <div class="label">
                     <p>${label.productCode}</p>
                     <p>${label.mfgDate}</p>
                     <p>${label.expDate}</p>
                     <p>${label.price}</p>
+                    ${label.weight ? `<p>${label.weight}</p>` : ""}
                   </div>
                 `
-                  )
-                  .join("")}
-              </div>
-            `
               )
               .join("")}
+              </div>
+            `
+        )
+        .join("")}
           </div>
         </body>
       </html>
@@ -150,6 +153,15 @@ function App() {
             type="text"
             name="price"
             value={labelData.price}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label>Weight (Optional):</label>
+          <input
+            type="text"
+            name="weight"
+            value={labelData.weight}
             onChange={handleInputChange}
           />
         </div>
